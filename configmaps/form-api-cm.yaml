@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: form-api-configmap
+  namespace: gsus-ns
+data:
+  DB_USER: "postgres"
+  DB_PASSWORD: "postgres"
+  DB_HOST: "postgres-svc"
+  DB_PORT: "5432"
+  DB_NAME: "postgres"

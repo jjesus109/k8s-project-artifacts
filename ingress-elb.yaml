@@ -1,0 +1,35 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: gsus-ns
+  name: ingress-alb-gsus-ns
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+spec:
+  rules:
+    - http:
+        paths:
+          - pathType: Prefix
+            path: /app/v1/forms
+            backend:
+              service:
+                name: form-api-svc
+                port:
+                  number: 8080
+          - pathType: Prefix
+            path: /vis
+            backend:
+              service:
+                name: visualization-svc
+                port:
+                  number: 80
+
+          - pathType: Prefix
+            path: /reg
+            backend:
+              service:
+                name: register-svc
+                port:
+                  number: 80

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: visualization-app
+  namespace: gsus-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: visualization-app
+  template:
+    metadata:
+      name: visualization-app
+      labels:
+        app: visualization-app
+    spec:
+      
+      containers:
+        - name: visualization-app-container
+          image: jesu11s/kubernetes-course:visulization-app-0.0.7
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: visualization-svc
+  namespace: gsus-ns
+spec:
+  type: ClusterIP
+  selector:
+    app: visualization-app
+  ports:
+    - port: 80
+      targetPort: 80

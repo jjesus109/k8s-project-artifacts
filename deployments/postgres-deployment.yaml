@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deploy
+  namespace: gsus-ns
+  labels:
+    name: postgres-deploy
+    app: db-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: postgres-deploy
+      app: db-postgres
+  template:
+    metadata:
+      name: postgres-pod
+      labels:
+        name: postgres-deploy
+        app: db-postgres
+    spec:
+      revisionHistoryLimit: 0
+      containers:
+        - name: postgres
+          image: postgres
+          ports:
+            - containerPort: 5432
+          env:
+            - name: PODTGRES_USER
+              value: "postgres"
+            - name: POSTGRES_PASSWORD
+              value: "postgres"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-svc
+  namespace: gsus-ns
+spec:
+  type: ClusterIP
+  selector:
+    app: db-postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: form-api
+  namespace: gsus-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      api: form-api
+  template:
+    metadata:
+      name: form-api
+      labels:
+        api: form-api
+    spec:
+      revisionHistoryLimit: 0
+      containers:
+        - name: form-api-container
+          image: jesu11s/kubernetes-course:form-api-0.0.4
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: form-api-configmap
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: form-api-svc
+  namespace: gsus-ns
+spec:
+  type: ClusterIP
+  selector:
+    api: form-api
+  ports:
+    - port: 8080
+      targetPort: 8080

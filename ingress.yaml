@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gsus-ingress
+  namespace: gsus-ns
+spec:
+  rules:
+    - host: 'gsus-apis'
+      http:
+        paths:
+          - pathType: Prefix
+            path: /app/v1/forms
+            backend:
+              service:
+                name: form-api-svc
+                port:
+                  number: 8080
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: visualization-svc
+                port:
+                  number: 80
+    - host: 'gsus-register'
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: register-svc
+                port:
+                  number: 80
